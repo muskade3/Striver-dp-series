@@ -46,5 +46,109 @@ return dp[ind]= Math.max(pick,notpick);
       int last=helper(l.length-1,l,dp1);
       return Math.max(first,last);
     }
+    
+    
+    
+    2....>>> Tabulation
+    
+class Solution {
+    public int rob(int[] nums) {
+        if(nums.length==0)
+        {
+            return 0;
+        }
+        if(nums.length<2)
+        {
+            return nums[0];
+        }
+
+      int dp[]= new int[nums.length-1]  ;
+      int dp1[]=new int[nums.length-1];
+      Arrays.fill(dp,0);
+      Arrays.fill(dp1,0);
+      int f[]=new int[nums.length-1];
+      int l[]= new int[nums.length-1];
+      for(int i=1;i<nums.length;i++)
+      {
+f[i-1]=nums[i];
+      }
+       for(int i=0;i<nums.length-1;i++)
+      {
+l[i]=nums[i];
+      }
+
+      dp[0]=f[0];
+      for(int i=1;i<dp.length;i++)
+      {
+          int pick=f[i];
+          if(i>1)
+          {
+              pick=f[i]+dp[i-2];
+          }
+          int nonpick= dp[i-1];
+          dp[i]=Math.max(pick,nonpick);
+      }
+      dp1[0]=l[0];
+      for(int i=1;i<dp1.length;i++)
+      {
+          int pick=l[i];
+          if(i>1)
+          {
+              pick=pick+dp1[i-2];
+          }
+          int nonpick= dp1[i-1];
+          dp1[i]=Math.max(pick,nonpick);
+      }
+      
+      return Math.max(dp[dp.length-1],dp1[dp1.length-1]);
+    }
 }
+
+3...>> Space Otimization
+class Solution {
+    public static int helper(int []nums)
+    {
+    
+    int prev1=nums[0];
+    int prev2=0;
+    for(int i=1;i<nums.length;i++)
+    {
+        int pick=nums[i];
+        if(i>1)
+        {
+pick=pick+prev2;
+        }
+        int nonpick= prev1;
+       int curr=Math.max(pick,nonpick);
+       prev2=prev1;
+       prev1=curr;
+
+
+    }
+return prev1;
+    }
+    public int rob(int[] nums) {
+        if(nums.length==0)
+        {
+            return 0;
+        }
+        if(nums.length<2)
+        {
+            return nums[0];
+            }
+      int n=nums.length;
+      int[] f= new int[n-1];
+      int[]l= new int[n-1];
+      for(int i=1;i<n;i++){
+          f[i-1]=nums[i];
+      }
+      for(int i=0;i<n-1;i++){
+          l[i]=nums[i];
+      }
+       int first=helper(f);
+      int last=helper(l);
+      return Math.max(first,last);
+    }
+}
+
 
