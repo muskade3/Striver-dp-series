@@ -1,0 +1,96 @@
+Ninja’s Training
+1...>> Recursion
+public class Solution {
+    public static int helper(int day,int last,int p[][])
+    {
+        if(day==0){
+            int maxi=0;
+        for(int task=0;task<3;task++)
+        {if(task!=last){
+            maxi=Math.max(maxi,p[0][task]);
+        }
+        }
+        return maxi;
+        }
+        int maxi=0;
+        for(int task=0;task<3;task++)
+        {
+            if(task!=last)
+            {
+                int point=p[day][task]+helper(day-1,task,p);
+                maxi=Math.max(maxi,point);
+            }
+        }
+        return maxi;
+
+    }
+    public static int ninjaTraining(int n, int points[][]) {
+
+        // Write your code here..
+    return helper(n-1,3,points);
+    }
+
+}
+output:Time limit exceeded
+few secs ago
+Test Cases
+2/11
+EXP:
+14/80
+
+
+
+2..>>> Memoization
+public class Solution {
+    public static int helper(int day,int last,int p[][],int[][]dp)
+    {
+        if(day==0){
+            int maxi=0;
+        for(int task=0;task<3;task++)
+        {if(task!=last){
+            maxi=Math.max(maxi,p[0][task]);
+        }
+        }
+        return maxi;
+        }
+        if(dp[day][last]!=-1)
+        {
+            return dp[day][last];
+        }
+        int maxi=0;
+        for(int task=0;task<3;task++)
+        {
+            if(task!=last)
+            {
+                int point=p[day][task]+helper(day-1,task,p,dp);
+                maxi=Math.max(maxi,point);
+            }
+        }
+        return dp[day][last]=maxi;
+
+    }
+    public static int ninjaTraining(int n, int points[][]) {
+
+        // Write your code here..
+        int dp[][]= new int[n][4];
+    for(int i=0;i<n;i++)
+    {
+        for(int j=0;j<4;j++)
+        {
+            dp[i][j]=-1;
+        }
+    }
+    return helper(n-1,3,points,dp);
+    }
+
+}
+output..>Runtime Error
+few secs ago
+Test Cases
+10/11
+EXP:
+72/80
+Penalty
+0%
+Java
+Exception in thread "main" java.lang.StackOverflowError at Solution.helper(Solution.java:22) 
