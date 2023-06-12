@@ -1,0 +1,50 @@
+ House Robber II
+1>> Memoization
+class Solution {
+    public static int helper(int ind,int[]nums,int[]dp)
+    {
+        if(ind==0)
+{
+    return nums[ind];
+}
+if(ind<0)
+{
+    return 0;
+}
+if(dp[ind]!=-1)
+{
+    return dp[ind];
+}
+int pick=nums[ind] +helper(ind-2,nums,dp);
+int notpick= helper(ind-1,nums,dp);
+return dp[ind]= Math.max(pick,notpick);
+    }
+    public int rob(int[] nums) {
+        if(nums.length==0)
+        {
+            return 0;
+        }
+        if(nums.length<2)
+        {
+            return nums[0];
+        }
+
+      int dp[]= new int[nums.length-1]  ;
+      int dp1[]=new int[nums.length-1];
+      Arrays.fill(dp,-1);
+      Arrays.fill(dp1,-1);
+      int n=nums.length;
+      int[] f= new int[n-1];
+      int[]l= new int[n-1];
+      for(int i=1;i<n;i++){
+          f[i-1]=nums[i];
+      }
+      for(int i=0;i<n-1;i++){
+          l[i]=nums[i];
+      }
+       int first=helper(f.length-1,f,dp);
+      int last=helper(l.length-1,l,dp1);
+      return Math.max(first,last);
+    }
+}
+
