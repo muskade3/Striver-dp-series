@@ -1,0 +1,128 @@
+Maximum sum of non-adjacent elements
+ 1>> Recursion
+import java.util.* ;
+import java.io.*; 
+import java.util.*;
+public class Solution {
+	public static int helper(int ind,ArrayList<Integer> a)
+	{
+		if(ind==0)
+		{
+			return a.get(ind);
+		}
+		if(ind<0)
+		{
+			return 0;
+		}
+		 int pick=a.get(ind)+helper(ind-2,a);
+		 int nonpick=0+helper(ind-1,a);
+		 return Math.max(pick,nonpick);
+	}
+	public static int maximumNonAdjacentSum(ArrayList<Integer> nums) {
+		// Write your code here.
+		int n=nums.size();
+		return helper(n-1,nums);
+	}
+}
+output
+Time limit exceeded
+few secs ago
+Test Cases
+7/15
+
+2>>Memoization
+import java.util.* ;
+import java.io.*; 
+import java.util.*;
+public class Solution {
+	public static int helper(int ind,ArrayList<Integer> a,int[]dp)
+	{
+		if(ind==0)
+		{
+			return a.get(ind);
+		}
+		if(ind<0)
+		{
+			return 0;
+		}
+		if(dp[ind]!=-1)
+		{
+			return dp[ind];
+		}
+		 int pick=a.get(ind)+helper(ind-2,a,dp);
+		 int nonpick=0+helper(ind-1,a,dp);
+		 dp[ind]=Math.max(pick,nonpick);
+		 return dp[ind];
+	}
+	public static int maximumNonAdjacentSum(ArrayList<Integer> nums) {
+		// Write your code here.
+		int n=nums.size();
+		int [] dp= new int[n];
+		for(int i=0;i<n;i++)
+		{
+			dp[i]=-1;
+		}
+	
+		return helper(n-1,nums,dp);
+	}
+}
+output
+Correct Answer
+few secs ago
+Test Cases
+15/15
+
+3>>> Tabulation
+mport java.util.* ;
+import java.io.*; 
+import java.util.*;
+public class Solution {
+	public static int maximumNonAdjacentSum(ArrayList<Integer> nums) {
+		// Write your code here.
+		int n=nums.size();
+		int [] dp= new int[n];
+		for(int i=0;i<n;i++)
+		{
+			dp[i]=0;
+		}
+	dp[0]=nums.get(0);
+	int neg=0;
+for(int i=1;i<dp.length;i++)
+{
+	int pick=nums.get(i);
+	if(i>1)
+	{
+pick=nums.get(i)+dp[i-2];
+	 }
+	int nonpick=dp[i-1];
+	dp[i]=Math.max(pick,nonpick);
+}
+return dp[n-1];
+	}
+}
+4>>> Space Optimization
+import java.util.* ;
+import java.io.*; 
+import java.util.*;
+public class Solution {
+	public static int maximumNonAdjacentSum(ArrayList<Integer> nums) {
+		// Write your code here.
+
+	int prev1=nums.get(0);
+	int prev2=0;
+for(int i=1;i<nums.size();i++)
+{
+	int pick=nums.get(i);
+	if(i>1)
+	{
+pick=nums.get(i)+prev2;
+	 }
+	int nonpick=prev1;
+	int curr=Math.max(pick,nonpick);
+	prev2=prev1;
+	prev1=curr;
+
+}
+return prev1;
+	}
+}
