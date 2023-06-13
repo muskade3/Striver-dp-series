@@ -1,0 +1,111 @@
+ Unique Paths
+ 1>> Recursion
+ class Solution {
+    public static int helper(int i,int j,int[][]a)
+    {
+        if(i==0&&j==0)
+        {
+            return 1;
+        }
+        if(i<0||j<0)
+        {
+            return 0;
+        }
+        int up=helper(i-1,j,a);
+        int left=helper(i,j-1,a);
+        return up+left;
+    }
+    public int uniquePaths(int m, int n) {
+        int[][]arr= new int[m][n];
+        for(int i=0;i<m;i++)
+        {
+            for(int j=0;j<n;j++)
+            {
+                arr[i][j]=0;
+            }
+        }
+        return helper(m-1,n-1,arr);
+    }
+}
+
+Output
+// Time Limit Exceeded
+
+
+2>>> Memoization
+class Solution {
+    public static int helper(int i,int j,int[][]a,int[][]dp)
+    {
+        if(i==0&&j==0)
+        {
+            return 1;
+        }
+        if(i<0||j<0)
+        {
+            return 0;
+        }
+        if(dp[i][j]!=-1)
+        {
+            return dp[i][j];
+        }
+        int up=helper(i-1,j,a,dp);
+        int left=helper(i,j-1,a,dp);
+        return dp[i][j]= up+left;
+    }
+    public int uniquePaths(int m, int n) {
+        int[][]arr= new int[m][n];
+        for(int i=0;i<m;i++)
+        {
+            for(int j=0;j<n;j++)
+            {
+                arr[i][j]=0;
+            }
+        }
+        int[][]dp= new int[m][n];
+         for(int i=0;i<m;i++)
+        {
+            for(int j=0;j<n;j++)
+            {
+            dp[i][j]=-1;
+            }
+        }
+        
+        return helper(m-1,n-1,arr,dp);
+    }
+}
+Output :All Test Cases Passed
+
+3>>>Tabulation
+class Solution {
+    public int uniquePaths(int m, int n) {
+        int[][]arr= new int[m][n];
+
+        for(int i=0;i<m;i++)
+        {
+            for(int j=0;j<n;j++)
+            {
+                if(i==0&&j==0){
+        arr[0][0]=1;
+                }else{
+        int up=0;
+        if(i>0)
+        {
+            up=arr[i-1][j];
+        }
+        int left=0;
+        if(j>0)
+        {
+            left= arr[i][j-1];
+        }
+        
+        arr[i][j]=up+left;
+
+            }
+            }
+        }
+        return arr[m-1][n-1];
+    }
+}
+
+output=All Test Case Passed
+
