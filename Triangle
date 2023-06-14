@@ -1,0 +1,81 @@
+Triangle
+1>> Recursion
+import java.util.* ;
+import java.io.*; 
+public class Solution {
+    public static int helper(int i,int j,int m,int n,int[][] a)
+    {
+        if(i==m-1){
+            return a[m-1][j];
+        }
+    
+
+        int down= helper(i+1,j,m,n,a);
+        int dia= helper(i+1,j+1,m,n,a);
+        int x=Math.min(down,dia);
+        return a[i][j]+x;
+    }
+    public static int minimumPathSum(int[][] triangle, int n) {
+        // Write your code here.
+        int m=triangle.length;
+        int c=triangle[0].length;
+        return helper(0,0,m,c,triangle);
+    }
+}
+2>> Memoization
+import java.util.* ;
+import java.io.*; 
+public class Solution {
+    public static int helper(int i,int j,int m,int[][] a,int[][]dp)
+    {
+        if(i==m-1){
+            return a[m-1][j];
+        }
+
+if(dp[i][j]!=-1)
+{
+    return dp[i][j];
+}
+        int down=a[i][j]+helper(i+1,j,m,a,dp);
+        int dia= a[i][j]+helper(i+1,j+1,m,a,dp);
+      return dp[i][j]=Math.min(down,dia);
+    
+    }
+    public static int minimumPathSum(int[][] triangle, int n) {
+        // Write your code here.
+        int m=triangle.length;
+        int c=triangle[0].length;
+        int dp[][]= new int[m][m];
+        for(int i=0;i<m;i++)
+        {
+            for(int j=0;j<m;j++)
+            {
+                dp[i][j]=-1;
+            }
+        }
+        return helper(0,0,m,triangle,dp);
+    }
+}
+3>> Tabulation
+class Solution {
+    public int minimumTotal(List<List<Integer>> triangle) {
+        
+    int m= triangle.size();
+
+    int dp[][]= new int[m][m];
+    for(int j=0;j<m;j++)
+    {
+        dp[m-1][j]=triangle.get(m-1).get(j);
+    }
+    for(int i=m-2;i>=0;i--)
+    {
+        for(int j=i;j>=0;j--)
+        {
+           int down= triangle.get(i).get(j)+dp[i+1][j];
+           int dia= triangle.get(i).get(j)+dp[i+1][j+1];
+           dp[i][j] = Math.min(down,dia);
+        }
+    }
+    return dp[0][0];
+    }
+}
