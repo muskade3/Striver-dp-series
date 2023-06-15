@@ -1,0 +1,127 @@
+ Minimum Falling Path Sum
+ 1>> Recusrion
+ class Solution {
+    public static int helper(int i,int j,int[][]a)
+    { 
+         if(j>a.length-1||j<0)
+        {
+            return Integer.MAX_VALUE;
+        }
+
+        if(i==a.length-1)
+        {
+            return a[a.length-1][j];
+        }
+        
+         int down=helper(i+1,j,a);
+         int dialeft=helper(i+1,j-1,a);
+         int diaright=helper(i+1,j+1,a);
+         int x=Math.min(down,Math.min(dialeft,diaright));
+         return a[i][j]+x;
+
+
+    }
+    public int minFallingPathSum(int[][] matrix) {
+        int min=Integer.MAX_VALUE;
+        
+        for(int i=0;i<matrix.length;i++)
+        {
+            min=Math.min(min,helper(0,i,matrix));
+            
+        }
+        return min;
+    }
+}
+output:tle
+
+2>>Memoization
+class Solution {
+    public static int helper(int i,int j,int[][]a,int[][]dp)
+    { 
+         if(j>a.length-1||j<0)
+        {
+            return Integer.MAX_VALUE;
+        }
+
+        if(i==a.length-1)
+        {
+            return a[a.length-1][j];
+        }
+        if(dp[i][j]!=-1)
+        {
+            return dp[i][j];
+        }
+        
+         int down=helper(i+1,j,a,dp);
+         int dialeft=helper(i+1,j-1,a,dp);
+         int diaright=helper(i+1,j+1,a,dp);
+         int x=Math.min(down,Math.min(dialeft,diaright));
+         return dp[i][j] =a[i][j]+x;
+
+
+    }
+    public int minFallingPathSum(int[][] matrix) {
+        int min=Integer.MAX_VALUE;
+        int m=matrix.length;
+        int n=matrix[0].length;
+        int dp[][]= new int[m][n];
+        for(int i=0;i<m;i++)
+        {
+            for(int j=0;j<n;j++)
+            {
+                dp[i][j]=-1;
+            }
+        }
+        for(int i=0;i<matrix.length;i++)
+        {
+            min=Math.min(min,helper(0,i,matrix,dp));
+            
+        }
+        return min;
+    }
+}
+output:Time Limit Exceeded
+49 / 50 testcases passed
+
+3>>Tabulation
+class Solution {
+ public int minFallingPathSum(int[][] matrix) {
+ int m=matrix.length;
+        int n=matrix[0].length;
+        int dp[][]= new int[m][n];
+for(int i=0;i<matrix.length;i++)
+        {
+        dp[m-1][i]=matrix[m-1][i];
+            
+        }
+        for(int i=m-2;i>=0;i--)
+        {
+            for(int j=0;j<n;j++)
+            {
+                if(i==0)
+                {
+                    dp[i][j]=matrix[i][j];
+                }
+            int down=dp[i+1][j];
+            int dialeft=Integer.MAX_VALUE;
+            if(j>0){
+          dialeft=dp[i+1][j-1];
+            }
+            int diaright=Integer.MAX_VALUE;
+         if(j<m-1){
+         diaright=dp[i+1][j+1];
+         }
+         int x=Math.min(down,Math.min(dialeft,diaright));
+          dp[i][j] =matrix[i][j]+x;
+            }
+        }
+    
+        int min=Integer.MAX_VALUE;
+        for(int i=0;i<m;i++)
+        {
+            min=Math.min(min,dp[0][i]);
+        }
+        return min;
+    }
+}
+output:ALL TEST CASES PASSED
