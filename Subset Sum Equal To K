@@ -1,0 +1,120 @@
+Subset Sum Equal To K
+1>>Recursion
+import java.util.* ;
+import java.io.*; 
+public class Solution {
+    public static boolean helper(int ind,int t,int[]a)
+    {
+        if(t==0)
+        {
+            return true;
+        }
+        if(ind==0)
+        {
+            return (a[0]==t);
+        }
+        boolean nonpick= helper(ind-1,t,a);
+        boolean pick=false;
+        if(t>=a[ind]){
+     pick= helper(ind-1,t-a[ind],a);
+        }
+        return pick||nonpick;
+    
+    }
+    public static boolean subsetSumToK(int n, int k, int arr[]){
+        // Write your code here.
+        return helper(n-1,k,arr);
+    }
+}
+
+output:
+tle:10/11
+2>>Memoization
+import java.util.* ;
+import java.io.*; 
+public class Solution {
+    public static boolean helper(int ind,int t,int[]a,int[][]dp)
+    {
+        if(t==0)
+        {
+            return true;
+        }
+        if(ind==0)
+        {
+            return (a[0]==t);
+        }
+        if(dp[ind][t]!=-1)
+        {
+            if(dp[ind][t]==0)
+            {
+                return false;
+            }else{
+                return true;
+            }
+        }
+        boolean nonpick= helper(ind-1,t,a,dp);
+         boolean pick=false;
+        if(t>=a[ind]){
+     pick= helper(ind-1,t-a[ind],a,dp);
+        }
+if(pick||nonpick)
+
+    {
+        dp[ind][t]=1;
+    }else{
+        dp[ind][t]=0;
+    }
+    return pick||nonpick;
+    
+    }
+    public static boolean subsetSumToK(int n, int k, int arr[]){
+        // Write your code here.
+        int[][]dp= new int[n][k+1];
+        for(int i=0;i<n;i++)
+        {
+            for(int j=0;j<k+1;j++)
+            {
+                dp[i][j]=-1;
+            }
+        }
+        return helper(n-1,k,arr,dp);
+    
+    }
+}
+
+output:all test case passes
+3>>Tabulation
+import java.util.* ;
+import java.io.*; 
+public class Solution {
+    
+      
+    public static boolean subsetSumToK(int n, int k, int arr[]){
+        // Write your code here.
+        boolean[][]dp= new boolean[n][k+1];
+        for(int i=0;i<n;i++){
+ dp[i][0]=true;
+        }
+        
+    if(arr[0]<=k){
+     dp[0][arr[0]]=true;
+        }
+        
+        
+        for(int ind=1;ind<n;ind++)
+        {
+            for(int tar=1;tar<=k;tar++)
+            {
+             boolean nonpick= dp[ind-1][tar];
+        boolean pick=false;
+        if(tar>=arr[ind])
+     pick= dp[ind-1][tar-arr[ind]];
+      dp[ind][tar]=pick||nonpick;
+            }
+        
+        }
+        return dp[n-1][k];
+    
+    }
+}
+output:all passes
