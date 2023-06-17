@@ -1,0 +1,94 @@
+0 1 Knapsack
+1>>Memoization
+import java.util.* ;
+import java.io.*; 
+
+public class Solution{
+    public static int helper(int ind,int[]w,int[] v,int maxw,int[][]dp)
+    {
+        if(ind==0)
+        {
+            if(maxw>=w[0])
+            {
+                return v[0];
+            }else{
+                return 0;
+            }
+        }
+        if(dp[ind][maxw]!=-1)
+        {
+            return dp[ind][maxw];
+        }
+        int nonpick=0+helper(ind-1,w,v,maxw,dp);
+        int pick=Integer.MIN_VALUE;
+        if(maxw>=w[ind])
+        {
+            pick=v[ind]+helper(ind-1,w,v,maxw-w[ind],dp);
+        }
+        return dp[ind][maxw]= Math.max(pick,nonpick);
+    }
+    static int knapsack(int[] weight, int[] value, int n, int maxWeight) {
+
+ 
+ 
+/* Your class should be named Solution
+            * Don't write main().
+            * Don't read input, it is passed as function argument.
+            * Change in the given tree itself.
+            * No need to return or print the output.
+            * Taking input and printing output is handled automatically.
+            */
+            int dp[][]= new int[n][maxWeight+1];
+        for(int i=0;i<dp.length;i++)
+        {
+            for(int j=0;j<=maxWeight;j++)
+            {
+                dp[i][j]=-1;
+            }
+        }
+            return helper(n-1,weight,value,maxWeight,dp);
+
+    }
+}
+
+
+2>>> Tabulation
+import java.util.* ;
+import java.io.*; 
+
+public class Solution{
+    
+    static int knapsack(int[] weight, int[] value, int n, int maxWeight) {
+
+            /* Your class should be named Solution
+            * Don't write main().
+            * Don't read input, it is passed as function argument.
+            * Change in the given tree itself.
+            * No need to return or print the output.
+            * Taking input and printing output is handled automatically.
+            */
+            int[][]dp=new int[n][maxWeight+1];
+
+            for(int wt=weight[0];wt<=maxWeight;wt++)
+            {
+                dp[0][wt]=value[0];
+            }
+         
+
+        for(int ind=1;ind<dp.length;ind++)
+        {
+            for(int wt=0;wt<=maxWeight;wt++)
+            {
+                int nonpick=dp[ind-1][wt];
+        int pick=Integer.MIN_VALUE;
+        if(wt>=weight[ind])
+        {
+            pick=value[ind]+dp[ind-1][wt-weight[ind]];
+        }
+                dp[ind][wt]=Math.max(pick,nonpick);
+            }
+        }
+            return dp[n-1][maxWeight];
+
+    }
+}
