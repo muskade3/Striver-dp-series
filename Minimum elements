@@ -1,0 +1,94 @@
+Minimum Elements
+1>.Memoization
+import java.util.* ;
+import java.io.*; 
+public class Solution {
+    public static int helper(int ind,int t,int[]nums,int[][]dp)
+    {
+         
+
+        if(ind==0)
+        {
+            if((t%nums[0])==0)
+            {
+                return t/nums[0];
+            }else{
+                return 10000000;
+            }
+        }
+if(dp[ind][t]!=-1)
+{
+    return dp[ind][t];
+}
+
+        int nonpick=helper(ind-1,t,nums,dp);
+        int pick=Integer.MAX_VALUE;
+        if(nums[ind]<=t)
+        {
+            pick=1+helper(ind,t-nums[ind],nums,dp);
+        }
+        return dp[ind][t]=Math.min(pick,nonpick);
+    }
+    public static int minimumElements(int num[], int x) {
+        // Write your code here..
+        
+        int n=num.length;
+        int[][]dp=new int[n][x+1];
+        for(int i=0;i<n;i++)
+        {
+            for(int j=0;j<=x;j++)
+            {
+                dp[i][j]=-1;
+            }
+        }
+        int ans=helper(n-1,x,num,dp);
+        if(ans==10000000)
+        {
+            return -1;
+        }
+        return ans;
+    }
+
+}
+
+2>.Tabulation
+import java.util.* ;
+import java.io.*; 
+public class Solution {
+    public static int minimumElements(int num[], int x) {
+        // Write your code here..
+        
+        int n=num.length;
+        int[][]dp=new int[n][x+1];
+         for(int i=0;i<=x;i++)
+        {
+            if((i%num[0])==0)
+            {
+                dp[0][i]=i/num[0];
+            }else{
+                dp[0][i]=10000000;
+            }
+        }
+        for(int ind=1;ind<n;ind++)
+        {
+            for(int t=0;t<=x;t++)
+            {
+        int nonpick=dp[ind-1][t];
+        int pick=Integer.MAX_VALUE;
+        if(num[ind]<=t)
+        {
+            pick=1+dp[ind][t-num[ind]];
+        }
+         dp[ind][t]=Math.min(pick,nonpick);
+
+        
+            }
+        }
+        if(dp[n-1][x]==10000000)
+        {
+            return -1;
+        }
+        return dp[n-1][x];
+    }
+
+}
